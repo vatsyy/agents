@@ -1,0 +1,503 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# Core
+
+model = "gpt-5.6-luna"
+model_reasoning_effort = "xhigh"
+web_search = "live"
+personality = "pragmatic"
+approvals_reviewer = "user"
+suppress_unstable_features_warning = true
+
+notify = ["/Users/vatsal/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+service_tier = "default"
+
+# Root
+# Contains project roots used directly by Codex.
+
+[projects."/Users/vatsal"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex"]
+trust_level = "trusted"
+
+# Frappe projects
+# Trust all Frappe projects beneath the bench apps directories.
+
+[projects."/Users/vatsal/frappe/version15/apps"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/frappev16/v16/apps"]
+trust_level = "trusted"
+
+# Codex config
+# Everything relevant to Codex and OpenAI.
+
+[projects."/Users/vatsal/.codex"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/agents"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-27/w"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-27/hi"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-28/hey"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/plea"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/odes"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/new-chat"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/i-have-adhd-plugin-i-have"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/clay-good-openlore-https-github-com"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-29/in-t"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-30/hi"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-31/hi"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-31/plugin-eval-plugin-plugin-eval-openai"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-07-31/hi-can-you-please-provide-a"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-01/is"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-01/hey"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-01/hey-i"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-01/hye"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-04/hi"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-04/can"]
+trust_level = "trusted"
+
+[features]
+unified_exec = true
+apps = true
+personality = true
+shell_snapshot = true
+multi_agent = true
+multi_agent_v2 = true
+hooks = false
+memories = true
+goals = true
+js_repl = false
+
+[agents]
+max_concurrent_threads_per_session = 10
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "medium"
+max_depth = 1
+
+[plugins."plugin-eval@openai-curated"]
+enabled = false
+
+[plugins."chatgpt-apps@openai-curated"]
+enabled = false
+
+[plugins."openai-developers@openai-curated"]
+enabled = false
+
+[plugins."documents@openai-primary-runtime"]
+enabled = false
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = false
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = false
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."compound-engineering@compound-engineering-plugin"]
+enabled = false
+
+[plugins."caveman@caveman"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."arxiv-mcp-server@arxiv-mcp"]
+enabled = true
+
+[plugins."i-have-adhd@i-have-adhd"]
+enabled = true
+
+[plugins."ponytail@ponytail"]
+enabled = false
+
+[plugins."coding-standards@personal"]
+enabled = true
+
+[marketplaces.openai-bundled]
+last_updated = "2026-08-03T10:29:04Z"
+source_type = "local"
+source = "/Users/vatsal/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-08-03T07:06:41Z"
+source_type = "local"
+source = "/Users/vatsal/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.compound-engineering-plugin]
+last_updated = "2026-08-04T12:37:22Z"
+last_revision = "6a2a0f9940ab0b3577ce26226ee393390470e412"
+source_type = "git"
+source = "https://github.com/EveryInc/compound-engineering-plugin.git"
+
+[marketplaces.caveman]
+last_updated = "2026-08-04T12:37:16Z"
+last_revision = "7066cc815414421f1ed29b42293cfb177a11db8c"
+source_type = "git"
+source = "https://github.com/JuliusBrussee/caveman.git"
+
+[marketplaces.arxiv-mcp]
+last_updated = "2026-07-29T08:17:19Z"
+last_revision = "8f79e8853c1104630a647889abb430fab539130e"
+source_type = "git"
+source = "https://github.com/blazickjp/arxiv-mcp-server.git"
+
+[marketplaces.i-have-adhd]
+last_updated = "2026-08-01T07:35:09Z"
+last_revision = "d05af1e4ac2259846e81686d14180d46d84acc2d"
+source_type = "git"
+source = "https://github.com/ayghri/i-have-adhd.git"
+ref = "main"
+
+[marketplaces.ponytail]
+last_updated = "2026-08-03T07:12:42Z"
+last_revision = "16f29800fd2681bdf24f3eb4ccffe38be3baec6b"
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex"
+CODEX_HOME = "/Users/vatsal/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "028a14b6eaa6d98dac2aae00764345ab9f244801ed8493d42b9af3be5575006e,f204d340535055781952b10ed396de20b842f00a19e430852f7e121ad1ce91f6"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.727.51351"
+SKY_CUA_SERVICE_PATH = "/Users/vatsal/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+
+[mcp_servers.jcodemunch]
+command = "/Users/vatsal/.local/bin/jcodemunch-mcp"
+args = ["serve"]
+
+[mcp_servers.jcodemunch.env]
+JCODEMUNCH_EMBED_MODEL = "all-MiniLM-L6-v2"
+
+[mcp_servers.jdocmunch]
+command = "/Users/vatsal/.local/bin/jdocmunch-mcp"
+args = ["serve"]
+
+[mcp_servers.jdocmunch.env]
+JDOCMUNCH_EMBEDDING_PROVIDER = "sentence-transformers"
+JDOCMUNCH_SHARE_SAVINGS = "0"
+JDOCMUNCH_ST_MODEL = "all-MiniLM-L6-v2"
+
+[mcp_servers.jdatamunch]
+command = "/Users/vatsal/.local/bin/jdatamunch-mcp"
+
+[mcp_servers.jdatamunch.env]
+JDATAMUNCH_SHARE_SAVINGS = "0"
+
+[mcp_servers.fff]
+command = "/opt/homebrew/bin/fff-mcp"
+args = ["--no-update-check", "--frecency-db", "/Users/vatsal/.cache/fff/frecency.lmdb", "--history-db", "/Users/vatsal/.cache/fff/history.lmdb"]
+cwd = "/Users/vatsal/agents"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = true
+
+[tui]
+status_line = [
+  "model-with-reasoning",
+  "current-dir",
+  "project-name",
+  "git-branch",
+  "context-remaining",
+  "five-hour-limit",
+  "weekly-limit",
+  "context-window-size",
+  "used-tokens",
+  "total-input-tokens",
+  "total-output-tokens",
+  "task-progress",
+]
+status_line_use_colors = true
+session_picker_view = "dense"
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 4
+
+[[skills.config]]
+path = "/Users/vatsal/.codex/skills/doc/SKILL.md"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-babysit-pr"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-brainstorm"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-code-review"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-commit"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-commit-push-pr"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-compound"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-compound-refresh"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-debug"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-doc-review"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-dogfood"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-explain"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-handoff"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-ideate"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-optimize"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-plan"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-polish"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-pov"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-product-pulse"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-promote"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-proof"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-resolve-pr-feedback"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-riffrec-feedback-analysis"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-setup"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-simplify-code"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-strategy"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-sweep"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-test-browser"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-test-xcode"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-work"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:ce-worktree"
+enabled = false
+
+[[skills.config]]
+name = "compound-engineering:lfg"
+enabled = false
+
+[[skills.config]]
+name = "template-creator:template-creator"
+enabled = false
+
+[desktop]
+ambient-suggestions-enabled = true
+conversationDetailMode = "STEPS_COMMANDS"
+localeOverride = "en-GB"
+reviewDelivery = "detached"
+dictationDictionary = []
+usePointerCursors = false
+reduced-motion-preference = "system"
+appearanceDiffMarkerStyle = "color"
+selected-avatar-id = "rocky"
+appearanceLightCodeThemeId = "linear"
+appearanceDarkCodeThemeId = "codex"
+sansFontSize = 14
+appearanceTheme = "system"
+show-context-window-usage = true
+followUpQueueMode = "queue"
+hotkey-window-projectless-default-enabled = true
+defaultTerminalLocation = "right"
+composerEnterBehavior = "cmdIfMultiline"
+dock-icon-preference = "app-default"
+codeFontSize = 13
+enabled-reasoning-efforts = ["low", "medium", "high", "xhigh", "ultra", "max"]
+show-ultra-in-model-picker-slider = false
+useFontSmoothing = true
+mac-menu-bar-enabled = false
+realtimeVoiceScreenContextEnabled = true
+preventSleepWhileRunning = true
+
+[desktop.open-in-target-preferences]
+global = "zed"
+
+[desktop.appearanceLightChromeTheme]
+accent = "#5e6ad2"
+contrast = 40
+ink = "#1b1b1b"
+opaqueWindows = false
+surface = "#fcfcfd"
+
+[desktop.appearanceLightChromeTheme.fonts]
+ui = "SF Pro Rounded"
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#52a450"
+diffRemoved = "#c94446"
+skill = "#8160d8"
+
+[desktop.appearanceDarkChromeTheme]
+accent = "#0169cc"
+contrast = 40
+ink = "#fcfcfc"
+opaqueWindows = false
+surface = "#111111"
+
+[desktop.appearanceDarkChromeTheme.fonts]
+ui = "SF Pro Rounded"
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#00a240"
+diffRemoved = "#e02e2a"
+skill = "#b06dff"
+
+[apps.asdk_app_6947c583d8308191844af6213ceabe16]
+enabled = false
+
+[apps.asdk_app_69ef18c674308191a2f952431f91ea61]
+enabled = false
+
+[apps.asdk_app_6938a94a61d881918ef32cb999ff937c]
+enabled = false
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = false
+
+[shell_environment_policy.set]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "028a14b6eaa6d98dac2aae00764345ab9f244801ed8493d42b9af3be5575006e,f204d340535055781952b10ed396de20b842f00a19e430852f7e121ad1ce91f6"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex"

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Case Design"
+  short_description: "Design precise missing test cases"
+  default_prompt: "Use $test-case-design to design missing tests with fixtures and assertions."
+policy:
+  allow_implicit_invocation: true

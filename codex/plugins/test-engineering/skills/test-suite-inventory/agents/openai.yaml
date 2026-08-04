@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Suite Inventory"
+  short_description: "Inventory existing tests and assertions"
+  default_prompt: "Use $test-suite-inventory to summarise existing tests for this repo."
+policy:
+  allow_implicit_invocation: true

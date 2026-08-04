@@ -1,0 +1,6 @@
+interface:
+  display_name: "Function Test Grader"
+  short_description: "Grade functions against test evidence"
+  default_prompt: "Use $function-test-grader to grade functions against existing tests."
+policy:
+  allow_implicit_invocation: true

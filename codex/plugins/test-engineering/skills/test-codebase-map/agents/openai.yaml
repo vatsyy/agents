@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Codebase Map"
+  short_description: "Map feature code before judging tests"
+  default_prompt: "Use $test-codebase-map to map this feature before reviewing tests."
+policy:
+  allow_implicit_invocation: true

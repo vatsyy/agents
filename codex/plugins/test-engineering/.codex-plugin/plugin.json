@@ -1,0 +1,38 @@
+{
+  "name": "test-engineering",
+  "version": "0.2.0",
+  "description": "Framework-neutral test engineering plugin for codebase-aware test inventory, coverage gap review, redundancy review, function-to-test confidence grading, test design, and monolithic test decomposition.",
+  "author": {
+    "name": "Vatsal"
+  },
+  "license": "MIT",
+  "keywords": [
+    "testing",
+    "coverage",
+    "unittest",
+    "pytest",
+    "jest",
+    "vitest",
+    "framework-adapters",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Test Engineering",
+    "shortDescription": "Codebase-aware test review and design.",
+    "longDescription": "Understand code structure, inventory existing tests, find coverage gaps and redundancy, grade function-to-test confidence, design missing tests, and decompose monolithic test cases across common project types.",
+    "developerName": "Vatsal",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Analyse",
+      "Plan"
+    ],
+    "defaultPrompt": [
+      "Use $using-test-engineering to review test coverage for this feature.",
+      "Use $function-test-grader to grade functions against existing tests.",
+      "Use $test-monolith-decomposer to split broad tests safely."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

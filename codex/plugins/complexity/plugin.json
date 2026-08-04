@@ -1,0 +1,5 @@
+{
+  "name": "complexity",
+  "description": "Complexity analysis plugin for calibrated repo hotspot triage and deterministic per-function metrics.",
+  "version": "0.2.0"
+}

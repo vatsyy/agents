@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Redundancy Review"
+  short_description: "Find duplicate and low-value tests"
+  default_prompt: "Use $test-redundancy-review to identify redundant tests in this suite."
+policy:
+  allow_implicit_invocation: true

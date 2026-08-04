@@ -1,0 +1,6 @@
+interface:
+  display_name: "Pytest Test Engineering"
+  short_description: "Pytest fixtures, parametrisation, and assertions"
+  default_prompt: "Use $pytest-test-engineering to design pytest tests for this feature."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,392 @@
+{
+  "cases": [
+    {
+      "name": "strong_pytest",
+      "files": {
+        "src/app.py": [
+          "def add(left, right):",
+          "    return left + right"
+        ],
+        "tests/test_app.py": [
+          "from src.app import add",
+          "",
+          "def test_add_behaviour():",
+          "    assert add(1, 2) == 3"
+        ]
+      },
+      "expected": {
+        "framework_hints_include": ["pytest/python"],
+        "covered_min": 1,
+        "grade_labels": {"add": ["direct test reference"]}
+      }
+    },
+    {
+      "name": "weak_pytest",
+      "files": {
+        "src/app.py": [
+          "def ping(client):",
+          "    return client.ping()"
+        ],
+        "tests/test_app.py": [
+          "from src.app import ping",
+          "",
+          "def test_ping_smoke(client):",
+          "    ping(client)"
+        ]
+      },
+      "expected": {
+        "risk_counts_at_least": {"assertion_light": 1},
+        "action_kinds_include": ["strengthen-assertion"]
+      }
+    },
+    {
+      "name": "unittest_suite",
+      "files": {
+        "src/app.py": [
+          "def add(left, right):",
+          "    return left + right"
+        ],
+        "tests/test_app.py": [
+          "import unittest",
+          "from src.app import add",
+          "",
+          "class AddTests(unittest.TestCase):",
+          "    def setUp(self):",
+          "        self.left = 1",
+          "",
+          "    def test_add(self):",
+          "        self.assertEqual(add(self.left, 2), 3)"
+        ]
+      },
+      "expected": {
+        "framework_hints_include": ["unittest/python"],
+        "test_case_count": 1
+      }
+    },
+    {
+      "name": "jest_suite",
+      "files": {
+        "src/math.js": [
+          "export function add(left, right) {",
+          "  return left + right;",
+          "}"
+        ],
+        "tests/math.test.js": [
+          "import { add } from '../src/math';",
+          "",
+          "test('adds numbers', () => {",
+          "  expect(add(1, 2)).toBe(3);",
+          "});"
+        ]
+      },
+      "expected": {
+        "framework_hints_include": ["jest/javascript"],
+        "grade_labels": {"add": ["direct test reference"]}
+      }
+    },
+    {
+      "name": "vitest_suite",
+      "files": {
+        "src/math.ts": [
+          "export const multiply = (left: number, right: number) => left * right;"
+        ],
+        "tests/math.test.ts": [
+          "import { test, expect, vi } from 'vitest';",
+          "import { multiply } from '../src/math';",
+          "",
+          "test('multiplies numbers', () => {",
+          "  expect(multiply(2, 3)).toBe(6);",
+          "  vi.fn();",
+          "});"
+        ]
+      },
+      "expected": {
+        "framework_hints_include": ["vitest/javascript"],
+        "grade_labels": {"multiply": ["direct test reference"]}
+      }
+    },
+    {
+      "name": "over_mocked_test",
+      "files": {
+        "src/app.py": [
+          "def upload(client, value):",
+          "    return client.send(value)"
+        ],
+        "tests/test_app.py": [
+          "from unittest.mock import MagicMock, patch",
+          "from src.app import upload",
+          "",
+          "def test_upload_with_many_mocks():",
+          "    with patch('a'), patch('b'), patch('c'), patch('d'):",
+          "        client = MagicMock()",
+          "        client.send.return_value = 'ok'",
+          "        assert upload(client, 'x') == 'ok'"
+        ]
+      },
+      "expected": {
+        "risk_counts_at_least": {"over_mocked": 1},
+        "action_kinds_include": ["review-mocks"]
+      }
+    },
+    {
+      "name": "monolithic_test",
+      "files": {
+        "src/app.py": [
+          "def subtract(left, right):",
+          "    return left - right"
+        ],
+        "tests/test_app.py": [
+          "from src.app import subtract",
+          "",
+          "def test_subtract_many_cases():",
+          "    assert subtract(3, 2) == 1",
+          "    assert subtract(5, 2) == 3",
+          "    assert subtract(8, 2) == 6",
+          "    assert subtract(13, 3) == 10",
+          "    assert subtract(21, 8) == 13",
+          "    assert subtract(34, 13) == 21",
+          "    assert subtract(55, 21) == 34",
+          "    assert subtract(89, 34) == 55"
+        ]
+      },
+      "expected": {
+        "risk_counts_at_least": {"monolith_candidates": 1},
+        "action_kinds_include": ["split-test"]
+      }
+    },
+    {
+      "name": "empty_placeholder_test",
+      "files": {
+        "src/app.py": [
+          "def ready():",
+          "    return True"
+        ],
+        "tests/test_placeholder.py": [
+          "def test_placeholder():",
+          "    pass"
+        ]
+      },
+      "expected": {
+        "risk_counts_at_least": {"assertion_light": 1},
+        "action_kinds_include": ["strengthen-assertion"]
+      }
+    },
+    {
+      "name": "redundant_tests",
+      "files": {
+        "src/app.py": [
+          "def add(left, right):",
+          "    return left + right"
+        ],
+        "tests/test_one.py": [
+          "from src.app import add",
+          "",
+          "def test_add():",
+          "    assert add(1, 2) == 3"
+        ],
+        "tests/test_two.py": [
+          "from src.app import add",
+          "",
+          "def test_add():",
+          "    assert add(2, 3) == 5"
+        ]
+      },
+      "expected": {
+        "risk_counts_at_least": {"redundant": 1}
+      }
+    },
+    {
+      "name": "private_helper",
+      "files": {
+        "src/app.py": [
+          "def _parse(value):",
+          "    return value.strip().lower()",
+          "",
+          "def parse_public(value):",
+          "    return _parse(value)"
+        ],
+        "tests/test_app.py": [
+          "from src.app import parse_public",
+          "",
+          "def test_parse_public():",
+          "    assert parse_public(' A ') == 'a'"
+        ]
+      },
+      "expected": {
+        "recommendation_contains": {"_parse": "Prefer testing the public behaviour"}
+      }
+    },
+    {
+      "name": "coverage_xml_present",
+      "coverage_xml": "coverage.xml",
+      "files": {
+        "src/app.py": [
+          "def add(left, right):",
+          "    return left + right"
+        ],
+        "tests/test_app.py": [
+          "from src.app import add",
+          "",
+          "def test_add():",
+          "    assert add(1, 2) == 3"
+        ],
+        "coverage.xml": [
+          "<coverage>",
+          "  <packages><package name='src'><classes>",
+          "    <class name='app.py' filename='src/app.py'>",
+          "      <lines><line number='1' hits='1'/><line number='2' hits='1'/></lines>",
+          "    </class>",
+          "  </classes></package></packages>",
+          "</coverage>"
+        ]
+      },
+      "expected": {
+        "grade_labels": {"add": ["coverage XML evidence"]}
+      }
+    },
+    {
+      "name": "framework_adapter",
+      "files": {
+        "src/app.py": [
+          "def save(value):",
+          "    return value"
+        ],
+        "tests/test_adapter.py": [
+          "from src.app import save",
+          "",
+          "class SaveTests(FrameworkTestCase):",
+          "    def test_save_workflow(self):",
+          "        assert save('x') == 'x'"
+        ]
+      },
+      "expected": {
+        "framework_hints_include": ["framework-adapter/python"],
+        "test_case_count": 1
+      }
+    },
+    {
+      "name": "name_only_false_positive_is_calibrated",
+      "files": {
+        "src/app.py": [
+          "def charge(value):",
+          "    return value"
+        ],
+        "tests/test_app.py": [
+          "def test_unrelated_label():",
+          "    label = 'charge'",
+          "    assert label"
+        ]
+      },
+      "expected": {
+        "status": "complete",
+        "exit_code": 0,
+        "grade_labels": {"charge": ["name/static heuristic"]},
+        "grade_values": {
+          "charge": {
+            "grade": "E",
+            "mapping_method": "function_name_token",
+            "evidence_type": "heuristic",
+            "assertion_evidence": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "dynamic_dispatch_false_negative_is_not_upgraded",
+      "files": {
+        "src/app.py": [
+          "def handle(value):",
+          "    return value"
+        ],
+        "tests/test_app.py": [
+          "import src.app as app",
+          "",
+          "def test_dynamic_dispatch():",
+          "    assert getattr(app, 'handle')('ok') == 'ok'"
+        ]
+      },
+      "expected": {
+        "status": "complete",
+        "grade_values": {
+          "handle": {
+            "grade": "E",
+            "mapping_method": "function_name_token",
+            "manual_review_required": true
+          }
+        }
+      }
+    },
+    {
+      "name": "malformed_python_is_partial",
+      "files": {
+        "src/broken.py": ["def broken(:"],
+        "tests/test_ok.py": ["def test_ok():", "    assert True"]
+      },
+      "expected": {
+        "status": "partial",
+        "exit_code": 1,
+        "diagnostic_codes_include": ["python-parse-failed"]
+      }
+    },
+    {
+      "name": "mixed_supported_and_unsupported_scope",
+      "files": {
+        "src/app.py": ["def ready():", "    return True"],
+        "src/main.go": ["package main"]
+      },
+      "expected": {
+        "status": "partial",
+        "exit_code": 1,
+        "diagnostic_codes_include": ["unsupported-language-files"],
+        "inventory_values": {"unsupported_code_file_count": 1}
+      }
+    },
+    {
+      "name": "empty_scope_is_unsupported",
+      "files": {},
+      "expected": {
+        "status": "unsupported",
+        "exit_code": 1,
+        "inventory_values": {"analysed_file_count": 0}
+      }
+    },
+    {
+      "name": "malformed_coverage_is_partial",
+      "coverage_xml": "coverage.xml",
+      "files": {
+        "src/app.py": ["def ready():", "    return True"],
+        "coverage.xml": ["<coverage>"]
+      },
+      "expected": {
+        "status": "partial",
+        "exit_code": 1,
+        "diagnostic_codes_include": ["coverage-malformed"]
+      }
+    },
+    {
+      "name": "strong_static_evidence_is_scoped_when_requested_coverage_is_missing",
+      "coverage_xml": "missing-coverage.xml",
+      "files": {
+        "src/app.py": ["def add(left, right):", "    return left + right"],
+        "tests/test_app.py": [
+          "from src.app import add",
+          "",
+          "def test_add():",
+          "    assert add(1, 2) == 3"
+        ]
+      },
+      "expected": {
+        "status": "partial",
+        "exit_code": 1,
+        "diagnostic_codes_include": ["coverage-missing"],
+        "grade_values": {
+          "add": {
+            "assessment_status": "scoped-evidence-only",
+            "grade": "unavailable",
+            "observed_grade": "B"
+          }
+        }
+      }
+    }
+  ]
+}

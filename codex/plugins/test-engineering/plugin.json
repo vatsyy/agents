@@ -1,0 +1,5 @@
+{
+  "name": "test-engineering",
+  "description": "Framework-neutral test engineering plugin for codebase-aware test inventory, coverage gap review, redundancy review, function-to-test confidence grading, test design, and monolithic test decomposition.",
+  "version": "0.2.0"
+}

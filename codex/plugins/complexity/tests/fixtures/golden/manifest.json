@@ -1,0 +1,237 @@
+[
+  {
+    "name": "bounded_retry_loop",
+    "scope": "bounded_retry_loop",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "client.py",
+        "kind": "io-in-loop",
+        "loop_classification": "retry loop",
+        "field_contains": {
+          "estimated_complexity": "not an unbounded N+1"
+        }
+      }
+    ],
+    "forbidden": [
+      {
+        "kind": "io-in-loop",
+        "loop_classification": "data loop"
+      }
+    ]
+  },
+  {
+    "name": "fixed_size_loop",
+    "scope": "fixed_size_loop",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "fields.py",
+        "kind": "io-in-loop",
+        "loop_classification": "fixed-size loop",
+        "field_contains": {
+          "calibration": "database"
+        }
+      }
+    ],
+    "forbidden": [
+      {
+        "kind": "io-in-loop",
+        "loop_classification": "data loop"
+      }
+    ]
+  },
+  {
+    "name": "set_dict_membership",
+    "scope": "set_dict_membership",
+    "false_positive_budget": 0,
+    "expected": [],
+    "forbidden": [
+      {
+        "kind": "membership-in-loop"
+      }
+    ]
+  },
+  {
+    "name": "recursive_ast_helper",
+    "scope": "recursive_ast_helper",
+    "false_positive_budget": 0,
+    "expected": [],
+    "forbidden": [
+      {
+        "kind": "nested-loop"
+      },
+      {
+        "kind": "io-in-loop"
+      }
+    ]
+  },
+  {
+    "name": "wrappers_and_frameworks",
+    "scope": "wrappers_and_frameworks",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "service.py",
+        "kind": "wrapper-io-in-loop",
+        "field_contains": {
+          "confidence_reason": "same-file wrapper evidence"
+        }
+      },
+      {
+        "path": "service.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "doc.db_set"
+        }
+      },
+      {
+        "path": "service.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "frappe.db.get_value"
+        }
+      },
+      {
+        "path": "service.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "frappe.get_all"
+        }
+      },
+      {
+        "path": "service.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "Widget.objects.get"
+        }
+      },
+      {
+        "path": "service.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "session.execute"
+        }
+      }
+    ],
+    "forbidden": [
+      {
+        "kind": "membership-in-loop"
+      }
+    ]
+  },
+  {
+    "name": "cross_file_wrapper",
+    "scope": "cross_file_wrapper",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "caller.py",
+        "kind": "wrapper-io-in-loop",
+        "field_contains": {
+          "confidence_reason": "cross-file wrapper evidence"
+        }
+      }
+    ],
+    "forbidden": []
+  },
+  {
+    "name": "pagination_streaming_cleanup",
+    "scope": "pagination_streaming_cleanup",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "transfers.py",
+        "kind": "io-in-loop",
+        "loop_classification": "pagination loop"
+      },
+      {
+        "path": "transfers.py",
+        "kind": "io-in-loop",
+        "loop_classification": "streaming loop"
+      },
+      {
+        "path": "transfers.py",
+        "kind": "wrapper-io-in-loop",
+        "field_contains": {
+          "confidence_reason": "name-hint wrapper evidence"
+        }
+      }
+    ],
+    "forbidden": [
+      {
+        "kind": "io-in-loop",
+        "loop_classification": "data loop",
+        "field_contains": {
+          "evidence": "client.request(next_url)"
+        }
+      }
+    ]
+  },
+  {
+    "name": "react_render_path",
+    "scope": "react_render_path",
+    "false_positive_budget": 1,
+    "expected": [
+      {
+        "path": "component.jsx",
+        "kind": "render-derived-work"
+      },
+      {
+        "path": "component.jsx",
+        "kind": "membership-in-loop"
+      }
+    ],
+    "forbidden": []
+  },
+  {
+    "name": "node_async_request_loop",
+    "scope": "node_async_request_loop",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "requests.js",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "evidence": "fetch"
+        }
+      }
+    ],
+    "forbidden": []
+  },
+  {
+    "name": "subprocess_wrapper",
+    "scope": "subprocess_wrapper",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "jobs.py",
+        "kind": "wrapper-io-in-loop",
+        "field_contains": {
+          "confidence_reason": "same-file wrapper evidence"
+        }
+      }
+    ],
+    "forbidden": []
+  },
+  {
+    "name": "local_filesystem_loop",
+    "scope": "local_filesystem_loop",
+    "false_positive_budget": 0,
+    "expected": [
+      {
+        "path": "files.py",
+        "kind": "io-in-loop",
+        "field_contains": {
+          "calibration": "not automatically an N+1 database/network bug"
+        }
+      }
+    ],
+    "forbidden": [
+      {
+        "kind": "io-in-loop",
+        "severity": "high"
+      }
+    ]
+  }
+]

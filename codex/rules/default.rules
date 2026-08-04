@@ -1,0 +1,102 @@
+# User-level exec policy.
+#
+# Only stable, read-only diagnostics that may need to inspect state outside a
+# workspace sandbox are allowed here. One-off repairs, installers, mutating
+# commands, shell wrappers, and broad network commands require normal approval.
+
+prefix_rule(
+    pattern = ["codex", "doctor"],
+    decision = "allow",
+    justification = "Read-only Codex health diagnostics.",
+    match = ["codex doctor", "codex doctor --json"],
+    not_match = ["codex plugin add example"],
+)
+
+prefix_rule(
+    pattern = ["codex", "mcp", "list"],
+    decision = "allow",
+    justification = "Read-only MCP configuration inventory.",
+    match = ["codex mcp list"],
+    not_match = ["codex mcp add example -- command"],
+)
+
+prefix_rule(
+    pattern = ["codex", "plugin", "list"],
+    decision = "allow",
+    justification = "Read-only installed-plugin inventory.",
+    match = ["codex plugin list", "codex plugin list --json"],
+    not_match = ["codex plugin add example"],
+)
+
+prefix_rule(
+    pattern = ["codex", "features", "list"],
+    decision = "allow",
+    justification = "Read-only feature-state inventory.",
+    match = ["codex features list"],
+    not_match = ["codex features enable example"],
+)
+
+prefix_rule(
+    pattern = ["codex", "debug", "prompt-input"],
+    decision = "allow",
+    justification = "Read-only inspection of the prompt Codex would load.",
+    match = ["codex debug prompt-input", "codex debug prompt-input test"],
+    not_match = ["codex debug compact"],
+)
+
+prefix_rule(
+    pattern = ["codex", "execpolicy", "check"],
+    decision = "allow",
+    justification = "Read-only validation of Codex rule matching.",
+    match = [
+        "codex execpolicy check --rules candidate.rules -- git status",
+    ],
+    not_match = ["codex exec test"],
+)
+
+prefix_rule(
+    pattern = ["skills", "list"],
+    decision = "allow",
+    justification = "Read-only inventory of installed skills.",
+    match = ["skills list", "skills list -g -a codex --json"],
+    not_match = ["skills add owner/repository"],
+)
+
+prefix_rule(
+    pattern = [
+        "jcodemunch-mcp",
+        ["config", "health", "install-status", "list-repos", "watch-status"],
+    ],
+    decision = "allow",
+    justification = "Read-only JCodeMunch configuration and health inspection.",
+    match = [
+        "jcodemunch-mcp health",
+        "jcodemunch-mcp list-repos --json",
+        "jcodemunch-mcp watch-status",
+    ],
+    not_match = ["jcodemunch-mcp index /Users/vatsal/project"],
+)
+
+prefix_rule(
+    pattern = ["jdocmunch-mcp", "verify-index"],
+    decision = "allow",
+    justification = "Read-only JDocMunch index verification.",
+    match = ["jdocmunch-mcp verify-index docs"],
+    not_match = ["jdocmunch-mcp index-local docs"],
+)
+
+prefix_rule(
+    pattern = ["fff-mcp", "--healthcheck"],
+    decision = "allow",
+    justification = "Read-only FFF server health check.",
+    match = ["fff-mcp --healthcheck"],
+    not_match = ["fff-mcp --index /Users/vatsal/project"],
+)
+
+prefix_rule(
+    pattern = ["bd", ["count", "info", "list", "ping", "ready", "show", "status", "where"]],
+    decision = "allow",
+    justification = "Read-only Beads status and issue inspection.",
+    match = ["bd status --json", "bd show bd-123", "bd ready --json"],
+    not_match = ["bd create New issue"],
+)

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Monolith Decomposer"
+  short_description: "Split broad tests into focused cases"
+  default_prompt: "Use $test-monolith-decomposer to split monolithic tests safely."
+policy:
+  allow_implicit_invocation: true

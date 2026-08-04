@@ -1,0 +1,6 @@
+interface:
+  display_name: "Test Coverage Gap Review"
+  short_description: "Find covered, partial, and missing tests"
+  default_prompt: "Use $test-coverage-gap-review to find missing tests for this feature."
+policy:
+  allow_implicit_invocation: true

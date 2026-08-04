@@ -1,0 +1,6 @@
+interface:
+  display_name: "Frappe Test Engineering"
+  short_description: "Frappe app test design and review"
+  default_prompt: "Use $frappe-test-engineering to review Frappe tests for this feature."
+policy:
+  allow_implicit_invocation: true

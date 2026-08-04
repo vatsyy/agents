@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# Resolve one supported Python runtime before importing any plugin module.
+set -eu
+
+PYTHON_BIN=${COMPLEXITY_PYTHON:-python3}
+
+if ! command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  printf 'Complexity analysis requires Python 3.10+; selected interpreter %s was not found.\n' "$PYTHON_BIN" >&2
+  exit 1
+fi
+
+if ! "$PYTHON_BIN" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)' >/dev/null 2>&1; then
+  printf 'Complexity analysis requires Python 3.10+; selected interpreter %s is unsupported or could not start.\n' "$PYTHON_BIN" >&2
+  exit 1
+fi
+
+exec "$PYTHON_BIN" "$@"

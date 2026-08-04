@@ -1,0 +1,6 @@
+interface:
+  display_name: "Using Test Engineering"
+  short_description: "Route codebase-aware test engineering work"
+  default_prompt: "Use $using-test-engineering for a read-only senior-engineer-grade test review. Include exact evidence, confidence labels, explicit empty sections, and a smallest-useful-next-action plan."
+policy:
+  allow_implicit_invocation: true

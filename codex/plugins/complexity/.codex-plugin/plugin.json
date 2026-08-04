@@ -1,0 +1,34 @@
+{
+  "name": "complexity",
+  "version": "0.2.0",
+  "description": "Complexity analysis plugin for calibrated repo hotspot triage and deterministic per-function metrics.",
+  "author": {
+    "name": "Noospheric"
+  },
+  "license": "MIT",
+  "keywords": [
+    "complexity",
+    "performance",
+    "static-analysis",
+    "code-review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Complexity",
+    "shortDescription": "Calibrated hotspot triage and function metrics",
+    "longDescription": "Analyse repository complexity hotspots with calibrated confidence labels, bounded-loop classification, wrapper-aware I/O leads, and deterministic per-function complexity metrics from one concise Codex skill.",
+    "developerName": "Noospheric",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Use $analyse-complexity to scan this repository for complexity hotspots.",
+      "Use $analyse-complexity to measure function complexity for this file.",
+      "Use $analyse-complexity to review performance risks without editing files."
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}

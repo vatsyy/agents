@@ -1,0 +1,7 @@
+[global]
+line-length = 110
+
+[MD013]
+line-length = 110
+reflow = true
+reflow-mode = "normalize"
