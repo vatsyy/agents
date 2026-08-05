@@ -2,8 +2,8 @@
 
 # Core
 
-model = "gpt-5.6-luna"
-model_reasoning_effort = "xhigh"
+model = "gpt-5.6-terra"
+model_reasoning_effort = "high"
 web_search = "live"
 personality = "pragmatic"
 approvals_reviewer = "user"
@@ -99,6 +99,12 @@ trust_level = "trusted"
 [projects."/Users/vatsal/Documents/Codex/2026-08-04/can"]
 trust_level = "trusted"
 
+[projects."/Users/vatsal/Documents/Astrology"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/botfiles"]
+trust_level = "trusted"
+
 [features]
 unified_exec = true
 apps = true
@@ -165,14 +171,17 @@ enabled = true
 [plugins."i-have-adhd@i-have-adhd"]
 enabled = true
 
-[plugins."ponytail@ponytail"]
-enabled = false
-
 [plugins."coding-standards@personal"]
 enabled = true
 
+[plugins."complexity@agents"]
+enabled = true
+
+[plugins."record-and-replay@openai-bundled"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-08-03T10:29:04Z"
+last_updated = "2026-08-05T07:55:29Z"
 source_type = "local"
 source = "/Users/vatsal/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
@@ -182,14 +191,14 @@ source_type = "local"
 source = "/Users/vatsal/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.compound-engineering-plugin]
-last_updated = "2026-08-04T12:37:22Z"
-last_revision = "6a2a0f9940ab0b3577ce26226ee393390470e412"
+last_updated = "2026-08-05T06:40:42Z"
+last_revision = "249f68cbc1fae2c7ae1f71c1ebe78cfd0f9fdf72"
 source_type = "git"
 source = "https://github.com/EveryInc/compound-engineering-plugin.git"
 
 [marketplaces.caveman]
-last_updated = "2026-08-04T12:37:16Z"
-last_revision = "7066cc815414421f1ed29b42293cfb177a11db8c"
+last_updated = "2026-08-04T15:20:08Z"
+last_revision = "ec83e5bace4c20484d704dea21e12fc4eb94e9aa"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"
 
@@ -200,17 +209,17 @@ source_type = "git"
 source = "https://github.com/blazickjp/arxiv-mcp-server.git"
 
 [marketplaces.i-have-adhd]
-last_updated = "2026-08-01T07:35:09Z"
-last_revision = "d05af1e4ac2259846e81686d14180d46d84acc2d"
+last_updated = "2026-08-05T06:40:44Z"
+last_revision = "0047e0d323af880d4a32acbcc8bf58b3ca3bb280"
 source_type = "git"
 source = "https://github.com/ayghri/i-have-adhd.git"
 ref = "main"
 
-[marketplaces.ponytail]
-last_updated = "2026-08-03T07:12:42Z"
-last_revision = "16f29800fd2681bdf24f3eb4ccffe38be3baec6b"
+[marketplaces.agents]
+last_updated = "2026-08-04T15:04:21Z"
+last_revision = "7a8a3f2fdaf3e83c90372ba5aff46cbaf00dc36b"
 source_type = "git"
-source = "https://github.com/DietrichGebert/ponytail.git"
+source = "https://github.com/vatsyy/agents.git"
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
@@ -224,15 +233,15 @@ startup_timeout_sec = 120
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 CODEX_HOME = "/Users/vatsal/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "028a14b6eaa6d98dac2aae00764345ab9f244801ed8493d42b9af3be5575006e,f204d340535055781952b10ed396de20b842f00a19e430852f7e121ad1ce91f6"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "091a81603ff202a16ed56557709bf42d97caf8f0dd2e07ae9e26d7c014d71035"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.727.51351"
+BROWSER_USE_CODEX_APP_VERSION = "26.730.61639"
 SKY_CUA_SERVICE_PATH = "/Users/vatsal/.codex/computer-use/Codex Computer Use.app"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
@@ -267,7 +276,7 @@ cwd = "/Users/vatsal/agents"
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
 args = ["mcp"]
 cwd = "."
-enabled = true
+enabled = false
 
 [tui]
 status_line = [
@@ -492,6 +501,9 @@ enabled = false
 [apps.asdk_app_6938a94a61d881918ef32cb999ff937c]
 enabled = false
 
+[apps.connector_2de447f3f15448ebab48783d7e4f5d81]
+enabled = false
+
 [memories]
 generate_memories = true
 use_memories = true
@@ -499,5 +511,5 @@ disable_on_external_context = false
 
 [shell_environment_policy.set]
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "028a14b6eaa6d98dac2aae00764345ab9f244801ed8493d42b9af3be5575006e,f204d340535055781952b10ed396de20b842f00a19e430852f7e121ad1ce91f6"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "091a81603ff202a16ed56557709bf42d97caf8f0dd2e07ae9e26d7c014d71035"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"

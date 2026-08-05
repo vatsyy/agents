@@ -1,0 +1,18 @@
+{
+  "name": "coding-standards",
+  "version": "0.1.0",
+  "description": "Project-aware coding standards for maintainable, correct, and efficient code.",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Coding Standards",
+    "shortDescription": "Project-aware language coding standards.",
+    "longDescription": "Coding Standards provides focused, project-aware language skills. The initial Python skill balances PEP guidance, repository configuration, correctness, maintainability, and measured performance.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Apply the Python coding standards to this change."
+  }
+}
