@@ -22,7 +22,7 @@ A **SHOULD** may be waived when active project or task context justifies it. A *
 ## Resolve before work
 
 1. Identify whether the request is review-only or implementation.
-2. Inspect instructions and effective configuration needed for the changed paths. Expand into contributing, deployment, packaging, framework, or public-contract documentation only when relevant.
+2. Inspect instructions and effective configuration needed for the changed paths. For repository triage or scans, load `references/project-resolution.md` before inspecting source. Expand into contributing, deployment, packaging, framework, or public-contract documentation only when relevant.
 3. Resolve configuration separately for every changed subtree using the project’s actual command, working directory, explicit arguments, nested files, and `extend` relationships. Do not assume root configuration applies or that nested Ruff configurations merge automatically.
 4. Resolve Python support:
    - For libraries, treat `requires-python` as the packaging contract. Use CI as evidence of tested versions; classifiers and documentation corroborate it.
@@ -32,6 +32,17 @@ A **SHOULD** may be waived when active project or task context justifies it. A *
    - Treat Ruff `target-version` as tooling/parser configuration, not the sole support contract.
 5. Identify changed contracts, framework registration, side effects, dependencies, and relevant tests.
 6. Make the smallest coherent change.
+
+## Repository triage and scans
+
+For a repository-wide Python triage, review, or scan:
+
+1. Establish the requested scope, whether tests/generated code are included, and the read-only or implementation boundary. Do not run task-tracking, setup, or project-management commands unless the user asks or they are needed to resolve the requested scope.
+2. Resolve instructions, Python support, effective tooling, and framework evidence before judging code. Identify a framework from local configuration, imports, layout, registration, or documentation; if evidence is insufficient, keep the audit framework-neutral.
+3. Inspect bounded batches: start with entry points, framework wiring, and configuration; then sample each production area, including representative operational and domain modules. Do not treat an inventory as an audit. For a large module, search its structure first, then read focused windows of at most roughly 300 lines; do not print an entire module merely to claim coverage.
+4. Use bounded, decision-relevant commands and output. Keep a command's source output to a reviewable size (normally no more than roughly 600 lines). Do not run `ruff check --show-settings` unless configuration debugging is the task. Stop expanding scope when the next command cannot change a finding, coverage decision, or verification choice.
+5. Tie every framework-specific conclusion to local evidence. Treat documented registration, lifecycle, discovery, transactions, permissions, migrations, and import-time wiring as contracts only when the project demonstrates that framework.
+6. If time, access, or evidence prevents adequate coverage, report the uninspected area and why rather than implying a complete scan.
 
 ## MUST preserve
 
@@ -78,6 +89,18 @@ For new or changed tests, control time, randomness, network, and environment; us
 Apply automatic fixes only within authorised files and inspect the diff. Narrow, documented suppressions are acceptable for genuine false positives, but never weaken quality gates merely to pass.
 
 Always report checks run, skipped, or failed. Report target resolution, changed contracts, unresolved findings, and performance, compatibility, or resilience decisions only when material.
+
+## Reporting contract for triage and scans
+
+Return a concise report with these headings, omitting only sections that are genuinely inapplicable:
+
+1. **Scope and coverage** — requested scope, production areas inspected, and material exclusions.
+2. **Resolved context** — Python support, relevant tool targets, and governing instructions/configuration.
+3. **Framework evidence** — framework identified (or not identified), the local evidence, and contracts that affected the assessment.
+4. **Findings** — at most the requested number; each gives `MUST`, `SHOULD`, or `JUDGEMENT`, path/line, evidence, impact, and a proportionate remedy. Say explicitly when no actionable finding is warranted.
+5. **Verification and status** — commands/checks run, skipped, or not run; unresolved uncertainty; and whether files or task state changed.
+
+Do not replace this report with raw command output or claim coverage the trace does not support.
 
 ## Conditional references
 

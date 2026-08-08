@@ -1,6 +1,6 @@
 {
   "name": "complexity",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Complexity analysis plugin for calibrated repo hotspot triage and deterministic per-function metrics.",
   "author": {
     "name": "Noospheric"

@@ -7,7 +7,7 @@ from collections.abc import Callable, Sequence
 from analysis_contract import MeasuredMetric, RepoContextSummary
 from function_complexity.output import runtime_flags
 from heuristic_scanner import Hotspot
-from ranking import DecisionScope, deterministic_complexity_key
+from ranking import DecisionScope, deterministic_complexity_key, is_performance_finding
 
 
 def build_decision_fields(
@@ -79,7 +79,9 @@ def performance_fields(
 ) -> dict[str, object]:
     authority = scope or DecisionScope()
     decision_metrics = [item for item in metrics if authority.includes(item.path)]
-    material_findings = [item for item in findings if is_material(item)]
+    material_findings = [
+        item for item in findings if is_performance_finding(item) and is_material(item)
+    ]
     top_hotspot = material_findings[0] if material_findings else None
     return {
         "material_hotspots": len(material_findings),

@@ -23,6 +23,39 @@ def read_each(items, frappe):
         frappe.db.get_value("Item", item, "name")
 """
 
+HIGH_CONTROL_FLOW = """
+def classify(value):
+    if value == 1:
+        return 1
+    if value == 2:
+        return 2
+    if value == 3:
+        return 3
+    if value == 4:
+        return 4
+    if value == 5:
+        return 5
+    if value == 6:
+        return 6
+    if value == 7:
+        return 7
+    if value == 8:
+        return 8
+    if value == 9:
+        return 9
+    if value == 10:
+        return 10
+    if value == 11:
+        return 11
+    if value == 12:
+        return 12
+    if value == 13:
+        return 13
+    if value == 14:
+        return 14
+    return 0
+"""
+
 
 class DecisionScopeTests(unittest.TestCase):
     def test_repository_scope_keeps_test_io_out_of_production_decisions(self) -> None:
@@ -108,6 +141,21 @@ class DecisionScopeTests(unittest.TestCase):
         )
         self.assertEqual(outcome.top_files[0].path, "app.py")
 
+    def test_high_control_flow_is_complexity_evidence_not_a_performance_hotspot(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "classifier.py"
+            target.write_text(HIGH_CONTROL_FLOW, encoding="utf-8")
+
+            outcome = analyse(AnalysisRequest(target=target))
+
+        self.assertTrue(
+            any(item.kind == "high-function-complexity" for item in outcome.findings)
+        )
+        self.assertEqual(
+            outcome.decision_fields["performance"]["material_hotspots"], 0
+        )
+        self.assertIsNone(outcome.decision_fields["performance"]["top_hotspot"])
+
     def test_zero_findings_limit_cannot_change_scope_decisions(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "app.py"
@@ -154,4 +202,3 @@ class DecisionScopeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

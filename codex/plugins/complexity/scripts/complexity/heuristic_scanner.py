@@ -654,7 +654,9 @@ class PythonHotspotVisitor(ast.NodeVisitor):
     def add_nested_loop_finding(self, node: ast.AST) -> None:
         if not self.loop_depth or any(self.benign_loop_stack):
             return
-        if is_child_collection_iteration(node, self.loop_target_stack):
+        if is_child_collection_iteration(
+            node, self.loop_target_stack
+        ) or is_worklist_traversal(node):
             self.add_nested_traversal_finding(node)
             return
         self.add_nested_scan_finding(node)
@@ -684,6 +686,9 @@ class PythonHotspotVisitor(ast.NodeVisitor):
             "Confirm whether the inner iterable is a child collection rather than a repeated full scan.",
             "typically linear in parents plus total children",
             "Check parent-child ownership, duplicate child sharing, and whether the child collection is recomputed.",
+            loop_classification="traversal loop",
+            confidence_reason="inner iteration follows an outer item or explicit worklist",
+            calibration="Traversal shape is not automatically a repeated full scan.",
         )
 
     def visit_loop_body(self, node: ast.AST) -> None:
@@ -743,6 +748,23 @@ class PythonHotspotVisitor(ast.NodeVisitor):
             self.add_wrapper_io_finding(node, name or full_name, evidence)
 
     def add_loop_sort_finding(self, node: ast.Call) -> None:
+        context = self.current_loop_context()
+        if context.kind == "traversal loop":
+            self.add(
+                node,
+                "medium",
+                "low",
+                "sort-in-loop",
+                "Sort operation appears inside a parent/child traversal.",
+                "sum of per-parent sorts; not automatically repeated sorting of one collection",
+                "Keep deterministic per-parent ordering unless representative profiling shows material cost.",
+                "same traversal semantics with measured optimisation only where justified",
+                "Confirm whether each collection belongs to one parent and is sorted once.",
+                loop_classification=context.kind,
+                confidence_reason=context.reason,
+                calibration="Per-parent traversal sorting is calibration evidence, not a material hotspot by itself.",
+            )
+            return
         self.add(
             node,
             "high",
@@ -753,6 +775,8 @@ class PythonHotspotVisitor(ast.NodeVisitor):
             "Sort once, maintain a heap, or use binary insertion/search if intermediate ordering is required.",
             "often O(n log n) or O(n log k)",
             "Check whether intermediate sorted states and comparator side effects are observable.",
+            loop_classification=context.kind,
+            confidence_reason=context.reason,
         )
 
     def add_loop_scan_finding(self, node: ast.Call, name: str) -> None:
@@ -1082,6 +1106,8 @@ def dotted_call_name(func: ast.AST) -> str:
 def loop_target_names(node: ast.AST) -> set[str]:
     if isinstance(node, (ast.For, ast.AsyncFor)):
         return target_names(node.target)
+    if isinstance(node, ast.While):
+        return worklist_item_names(node)
     return set()
 
 
@@ -1107,11 +1133,29 @@ def iterator_uses_outer_target(iterator: ast.AST, loop_target_stack: Sequence[se
 
 
 def iterator_base_names(iterator: ast.AST) -> set[str]:
+    if isinstance(iterator, ast.Name):
+        return {iterator.id}
     if isinstance(iterator, ast.Attribute):
         return attribute_base_names(iterator)
+    if isinstance(iterator, ast.Subscript):
+        return iterator_base_names(iterator.value) | expression_names(iterator.slice)
     if isinstance(iterator, ast.Call):
-        return iterator_base_names(iterator.func)
+        return iterator_base_names(iterator.func) | call_argument_names(iterator)
     return set()
+
+
+def expression_names(node: ast.AST) -> set[str]:
+    return {child.id for child in ast.walk(node) if isinstance(child, ast.Name)}
+
+
+def call_argument_names(node: ast.Call) -> set[str]:
+    names: set[str] = set()
+    for argument in [*node.args, *(keyword.value for keyword in node.keywords)]:
+        if isinstance(argument, ast.Name):
+            names.add(argument.id)
+        elif isinstance(argument, (ast.Attribute, ast.Subscript)):
+            names.update(iterator_base_names(argument))
+    return names
 
 
 def attribute_base_names(node: ast.Attribute) -> set[str]:
@@ -1120,6 +1164,67 @@ def attribute_base_names(node: ast.Attribute) -> set[str]:
     if isinstance(node.value, ast.Attribute):
         return attribute_base_names(node.value)
     return set()
+
+
+WORKLIST_REMOVE_METHODS = frozenset({"pop", "popleft"})
+WORKLIST_ADD_METHODS = frozenset({"append", "appendleft", "extend"})
+
+
+def is_worklist_traversal(node: ast.AST) -> bool:
+    """Recognise a stack or queue walk without assuming quadratic work."""
+    worklist = worklist_name(node)
+    if worklist is None:
+        return False
+    methods = worklist_methods(node, worklist)
+    return bool(methods & WORKLIST_REMOVE_METHODS) and bool(
+        methods & WORKLIST_ADD_METHODS
+    )
+
+
+def worklist_item_names(node: ast.While) -> set[str]:
+    worklist = worklist_name(node)
+    if worklist is None:
+        return set()
+    names: set[str] = set()
+    for child in ast.walk(node):
+        if not isinstance(child, (ast.Assign, ast.AnnAssign)):
+            continue
+        value = child.value
+        if not is_worklist_call(value, worklist, WORKLIST_REMOVE_METHODS):
+            continue
+        targets = child.targets if isinstance(child, ast.Assign) else [child.target]
+        for target in targets:
+            names.update(target_names(target))
+    return names
+
+
+def worklist_name(node: ast.AST) -> str | None:
+    if not isinstance(node, ast.While) or not isinstance(node.test, ast.Name):
+        return None
+    return node.test.id
+
+
+def worklist_methods(node: ast.AST, worklist: str) -> set[str]:
+    return {
+        child.func.attr
+        for child in ast.walk(node)
+        if isinstance(child, ast.Call)
+        and isinstance(child.func, ast.Attribute)
+        and isinstance(child.func.value, ast.Name)
+        and child.func.value.id == worklist
+    }
+
+
+def is_worklist_call(
+    node: ast.AST, worklist: str, methods: frozenset[str]
+) -> bool:
+    return (
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == worklist
+        and node.func.attr in methods
+    )
 
 
 def is_benign_iteration(node: ast.AST) -> bool:
@@ -1147,9 +1252,20 @@ def classify_for_loop(node: ast.For | ast.AsyncFor) -> LoopContext:
         return LoopContext("retry loop", "high", "range-based retry loop")
     if is_fixed_size_iterator(iterator):
         return LoopContext("fixed-size loop", "high", "literal or constant-sized iterable")
+    if is_traversal_iterator(iterator):
+        return LoopContext(
+            "traversal loop", "medium", "iterator walks parent/child filesystem data"
+        )
     if is_streaming_loop(node):
         return LoopContext("streaming loop", "medium", "loop body reads chunks or bytes")
     return LoopContext("data loop", "medium", "loop iterates over runtime data")
+
+
+def is_traversal_iterator(iterator: ast.AST) -> bool:
+    return isinstance(iterator, ast.Call) and call_name(iterator.func) in {
+        "walk",
+        "iter_source_files",
+    }
 
 
 def classify_while_loop(node: ast.While) -> LoopContext:

@@ -15,7 +15,25 @@ MaterialFinding = Callable[[Hotspot], bool]
 DecisionTargetKind = Literal["file", "directory"]
 PathScope = Literal["production", "migration", "test"]
 CALIBRATION_ONLY_LOOP_CLASSIFICATIONS = frozenset(
-    {"retry loop", "fixed-size loop", "streaming loop", "pagination loop"}
+    {
+        "retry loop",
+        "fixed-size loop",
+        "streaming loop",
+        "pagination loop",
+        "traversal loop",
+    }
+)
+PERFORMANCE_FINDING_KINDS = frozenset(
+    {
+        "io-in-loop",
+        "membership-in-loop",
+        "nested-loop",
+        "nested-or-callback-loop",
+        "render-derived-work",
+        "repeated-scan",
+        "sort-in-loop",
+        "wrapper-io-in-loop",
+    }
 )
 
 
@@ -51,6 +69,10 @@ class DecisionScope:
     def is_material_finding(self, item: Hotspot) -> bool:
         """Return whether a heuristic lead is material in this scope."""
         return self.includes(item.path) and _base_material_finding(item)
+
+    def is_material_performance_finding(self, item: Hotspot) -> bool:
+        """Return whether a runtime heuristic is material in this scope."""
+        return self.is_material_finding(item) and is_performance_finding(item)
 
     def is_material_metric(self, item: MeasuredMetric) -> bool:
         """Return whether deterministic evidence is material in this scope."""
@@ -106,6 +128,18 @@ def is_material_finding(
 ) -> bool:
     """Backward-compatible projection of the canonical scope-aware policy."""
     return (scope or DecisionScope()).is_material_finding(item)
+
+
+def is_performance_finding(item: Hotspot) -> bool:
+    """Return whether a heuristic belongs to the runtime-performance axis."""
+    return item.kind in PERFORMANCE_FINDING_KINDS
+
+
+def is_material_performance_finding(
+    item: Hotspot, scope: DecisionScope | None = None
+) -> bool:
+    """Return whether a runtime heuristic should affect performance decisions."""
+    return (scope or DecisionScope()).is_material_performance_finding(item)
 
 
 def rank_functions(
@@ -172,7 +206,7 @@ def material_runtime_lead_strength(
         finding
         for finding in findings
         if (
-            authority.is_material_finding(finding)
+            authority.is_material_performance_finding(finding)
             and finding.path == item.path
             and finding_belongs_to_metric(finding, item)
         )
@@ -194,7 +228,10 @@ def runtime_lead_strength(
     finding: Hotspot, scope: DecisionScope | None = None
 ) -> int:
     """Demote bounded, streaming, and pagination loops to calibration evidence."""
-    if not is_material_finding(finding, scope) or finding.loop_classification != "data loop":
+    if (
+        not is_material_performance_finding(finding, scope)
+        or finding.loop_classification != "data loop"
+    ):
         return 0
     if finding.kind == "io-in-loop":
         return 2
@@ -208,11 +245,13 @@ def rank_files(
     *,
     scope: DecisionScope | None = None,
 ) -> list[RankedFile]:
-    materiality = (
-        scope.is_material_finding
-        if scope is not None
-        else (is_material or is_material_finding)
-    )
+    if scope is not None:
+        materiality = scope.is_material_performance_finding
+    else:
+        base_materiality = is_material or is_material_finding
+
+        def materiality(item: Hotspot) -> bool:
+            return is_performance_finding(item) and base_materiality(item)
     paths = {item.path for item in metrics} | {item.path for item in findings}
     rows = [
         rank_file(path, metrics, findings, materiality, scope=scope)

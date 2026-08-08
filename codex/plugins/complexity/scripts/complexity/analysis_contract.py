@@ -20,7 +20,7 @@ AdapterStatus = Literal[
     "complete", "partial", "unavailable", "failed", "not-applicable", "not-requested"
 ]
 SCHEMA_VERSION = 1
-PLUGIN_VERSION = "0.1.0"
+PLUGIN_VERSION = "0.2.1"
 DEFAULT_EXCLUDES = frozenset(
     {
         ".git",

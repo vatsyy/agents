@@ -21,3 +21,9 @@ Required compatibility code for a declared support matrix is legitimate. Specula
 ## Framework wiring
 
 Avoid accidental import-time work, but preserve deliberate registration and wiring used by frameworks such as Django, Frappe, Celery, and plugin systems. Treat documented registration as part of the module contract.
+
+## Framework discovery for audits
+
+For a repository scan, identify a framework only from local evidence: package metadata, dependencies, imports, directory layout, entry points, registration modules, or project documentation. Read the framework-specific material only after that evidence exists.
+
+Apply framework conventions only where the identified framework and repository make them relevant. Record the evidence alongside any framework-specific finding. If the project does not establish a framework, retain general Python guidance and state the uncertainty rather than guessing.

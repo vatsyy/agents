@@ -77,6 +77,92 @@ def outer(value):
             ]
         )
 
+    def test_child_collection_names_and_subscripts_are_traversal_not_nested_scans(self) -> None:
+        source = """
+        def visit(graph):
+            for node, children in graph.items():
+                for child in children:
+                    keep(child)
+                for child in graph[node]:
+                    keep(child)
+        """
+
+        findings = scan_python(
+            Path("graph.py"), Path("."), textwrap.dedent(source).strip() + "\n"
+        )
+
+        traversals = [item for item in findings if item.kind == "nested-traversal"]
+        self.assertEqual([item.line for item in traversals], [3, 5])
+        self.assertTrue(
+            all(item.loop_classification == "traversal loop" for item in traversals)
+        )
+        self.assertFalse([item for item in findings if item.kind == "nested-loop"])
+
+    def test_outer_name_in_generator_filter_does_not_hide_repeated_full_scan(self) -> None:
+        source = """
+        def compare(groups, candidates):
+            for group in groups:
+                for candidate in (item for item in candidates if item not in group):
+                    keep(candidate)
+        """
+
+        findings = scan_python(
+            Path("compare.py"), Path("."), textwrap.dedent(source).strip() + "\n"
+        )
+
+        nested = [item for item in findings if item.kind == "nested-loop"]
+        self.assertEqual([item.line for item in nested], [3])
+
+    def test_outer_name_passed_to_iterator_factory_is_traversal_evidence(self) -> None:
+        source = """
+        def index_calls(test_texts):
+            for path, text in test_texts.items():
+                for name, line in call_locations(path, text):
+                    keep(name, line)
+        """
+
+        findings = scan_python(
+            Path("grading.py"), Path("."), textwrap.dedent(source).strip() + "\n"
+        )
+
+        traversals = [item for item in findings if item.kind == "nested-traversal"]
+        self.assertEqual([item.line for item in traversals], [3])
+        self.assertFalse([item for item in findings if item.kind == "nested-loop"])
+
+    def test_nested_worklist_loop_is_traversal_not_a_quadratic_scan(self) -> None:
+        source = """
+        def visit(graph):
+            for start in graph:
+                stack = [start]
+                while stack:
+                    node = stack.pop()
+                    stack.extend(graph[node])
+        """
+
+        findings = scan_python(
+            Path("graph.py"), Path("."), textwrap.dedent(source).strip() + "\n"
+        )
+
+        traversal = next(item for item in findings if item.kind == "nested-traversal")
+        self.assertEqual(traversal.line, 4)
+        self.assertEqual(traversal.loop_classification, "traversal loop")
+        self.assertFalse([item for item in findings if item.kind == "nested-loop"])
+
+    def test_per_directory_sort_is_calibrated_as_traversal_work(self) -> None:
+        source = """
+        def inventory(root, excluded):
+            for dirpath, dirnames, filenames in os.walk(root):
+                dirnames[:] = sorted(name for name in dirnames if name not in excluded)
+        """
+
+        findings = scan_python(
+            Path("inventory.py"), Path("."), textwrap.dedent(source).strip() + "\n"
+        )
+
+        sort_finding = next(item for item in findings if item.kind == "sort-in-loop")
+        self.assertEqual(sort_finding.confidence, "low")
+        self.assertEqual(sort_finding.loop_classification, "traversal loop")
+
     def test_closed_javascript_loop_does_not_capture_following_top_level_work(self) -> None:
         source = """
         function process(items, others) {

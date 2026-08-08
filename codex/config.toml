@@ -2,7 +2,7 @@
 
 # Core
 
-model = "gpt-5.6-terra"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 web_search = "live"
 personality = "pragmatic"
@@ -105,6 +105,30 @@ trust_level = "trusted"
 [projects."/Users/vatsal/botfiles"]
 trust_level = "trusted"
 
+[projects."/Users/vatsal/frappev16/v16/apps/onedrive_backup_v16"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-06/hey"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-06/hey-mate-i-need-your-help"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-06/hey-mate-i-need-your-help-2"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-06/how"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-07/hey"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-07/hey-2"]
+trust_level = "trusted"
+
+[projects."/Users/vatsal/Documents/Codex/2026-08-07/how"]
+trust_level = "trusted"
+
 [features]
 unified_exec = true
 apps = true
@@ -171,34 +195,37 @@ enabled = true
 [plugins."i-have-adhd@i-have-adhd"]
 enabled = true
 
-[plugins."coding-standards@personal"]
-enabled = true
-
 [plugins."complexity@agents"]
 enabled = true
 
 [plugins."record-and-replay@openai-bundled"]
 enabled = true
 
+[plugins."coding-standards@agents"]
+enabled = true
+
+[plugins."sol-advisor@sol-advisor"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-08-05T07:55:29Z"
+last_updated = "2026-08-08T08:03:31Z"
 source_type = "local"
 source = "/Users/vatsal/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-08-03T07:06:41Z"
+last_updated = "2026-08-06T07:01:16Z"
 source_type = "local"
 source = "/Users/vatsal/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.compound-engineering-plugin]
-last_updated = "2026-08-05T06:40:42Z"
-last_revision = "249f68cbc1fae2c7ae1f71c1ebe78cfd0f9fdf72"
+last_updated = "2026-08-06T16:06:22Z"
+last_revision = "0a2957852e2034d04eb01120fd7da6ed5307dc56"
 source_type = "git"
 source = "https://github.com/EveryInc/compound-engineering-plugin.git"
 
 [marketplaces.caveman]
-last_updated = "2026-08-04T15:20:08Z"
-last_revision = "ec83e5bace4c20484d704dea21e12fc4eb94e9aa"
+last_updated = "2026-08-08T07:10:08Z"
+last_revision = "14d4f2e21a16b573373ca24698cd6bd3db75bf52"
 source_type = "git"
 source = "https://github.com/JuliusBrussee/caveman.git"
 
@@ -209,63 +236,47 @@ source_type = "git"
 source = "https://github.com/blazickjp/arxiv-mcp-server.git"
 
 [marketplaces.i-have-adhd]
-last_updated = "2026-08-05T06:40:44Z"
-last_revision = "0047e0d323af880d4a32acbcc8bf58b3ca3bb280"
+last_updated = "2026-08-06T22:13:56Z"
+last_revision = "2d19ad205eb1d85fc9c3968bdeba4c2116518685"
 source_type = "git"
 source = "https://github.com/ayghri/i-have-adhd.git"
 ref = "main"
 
 [marketplaces.agents]
-last_updated = "2026-08-04T15:04:21Z"
-last_revision = "7a8a3f2fdaf3e83c90372ba5aff46cbaf00dc36b"
+last_updated = "2026-08-05T12:32:51Z"
+last_revision = "15a872bd24bff0eb4f0ecc503dc83605a5993c48"
 source_type = "git"
 source = "https://github.com/vatsyy/agents.git"
+
+[marketplaces.sol-advisor]
+last_updated = "2026-08-08T07:10:13Z"
+last_revision = "676d200733ebd57caf1270ba94d892c95e9f8aee"
+source_type = "git"
+source = "https://github.com/DannyMac180/sol-advisor.git"
+ref = "main"
 
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
 
 [mcp_servers.node_repl]
-args = []
 command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
+startup_timeout_sec = 120.0
 
 [mcp_servers.node_repl.env]
-NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
-CODEX_HOME = "/Users/vatsal/.codex"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "091a81603ff202a16ed56557709bf42d97caf8f0dd2e07ae9e26d7c014d71035"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.803.41515"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+CODEX_HOME = "/Users/vatsal/.codex"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.730.61639"
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 SKY_CUA_SERVICE_PATH = "/Users/vatsal/.codex/computer-use/Codex Computer Use.app"
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
-
-[mcp_servers.jcodemunch]
-command = "/Users/vatsal/.local/bin/jcodemunch-mcp"
-args = ["serve"]
-
-[mcp_servers.jcodemunch.env]
-JCODEMUNCH_EMBED_MODEL = "all-MiniLM-L6-v2"
-
-[mcp_servers.jdocmunch]
-command = "/Users/vatsal/.local/bin/jdocmunch-mcp"
-args = ["serve"]
-
-[mcp_servers.jdocmunch.env]
-JDOCMUNCH_EMBEDDING_PROVIDER = "sentence-transformers"
-JDOCMUNCH_SHARE_SAVINGS = "0"
-JDOCMUNCH_ST_MODEL = "all-MiniLM-L6-v2"
-
-[mcp_servers.jdatamunch]
-command = "/Users/vatsal/.local/bin/jdatamunch-mcp"
-
-[mcp_servers.jdatamunch.env]
-JDATAMUNCH_SHARE_SAVINGS = "0"
 
 [mcp_servers.fff]
 command = "/opt/homebrew/bin/fff-mcp"
@@ -277,6 +288,9 @@ command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.
 args = ["mcp"]
 cwd = "."
 enabled = false
+
+[mcp_servers.codebase-memory-mcp]
+command = "/Users/vatsal/.local/bin/codebase-memory-mcp"
 
 [tui]
 status_line = [
@@ -511,5 +525,28 @@ disable_on_external_context = false
 
 [shell_environment_policy.set]
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "091a81603ff202a16ed56557709bf42d97caf8f0dd2e07ae9e26d7c014d71035"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "323bc3e687e17d7e377238d9f4c69111c4d0e6219103b6316d8c52082489533b"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/vatsal/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+
+[hooks.state]
+
+[hooks.state."tokenx@openai-curated-remote:hooks/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:06c4036b9745b2f8da3f22f1e6066481d1ea80a74ae026f83c8705005a90d732"
+
+[hooks.state."tokenx@openai-curated-remote:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:7c45ce23ff0df0ea1c50352a4e1a9e0e9235a499a5e79e9d1a87ff2b3080443d"
+
+[hooks.state."tokenx@openai-curated-remote:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:30286b7b7c8b3b983076c87418bef44ccf1c229411acb3472f389665b7829848"
+
+[hooks.state."i-have-adhd@i-have-adhd:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:f0c7f021bbb20b06d8f65f97fc423270cf0c6b6dbe0ee1fa55548826fa336bd6"
+
+# >>> codebase-memory-mcp SessionStart >>>
+[[hooks.SessionStart]]
+matcher = "startup|resume|clear|compact"
+
+[[hooks.SessionStart.hooks]]
+type = "command"
+command = 'echo "Code discovery: use codebase-memory-mcp for indexed structural relationships and architecture; use exact search for literals, configs, unsupported files, or incomplete graph results; check index_status when freshness matters."'
+# <<< codebase-memory-mcp SessionStart <<<

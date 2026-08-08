@@ -522,7 +522,12 @@ class CanonicalOutputTests(unittest.TestCase):
             payload = json.loads(render(analyse(AnalysisRequest(target=path)), "json"))
 
         self.assertEqual(payload["schema_version"], 1)
-        self.assertEqual(payload["plugin_version"], "0.1.0")
+        self.assertEqual(payload["plugin_version"], "0.2.1")
+        manifest_versions = {
+            json.loads((PLUGIN_ROOT / relative_path).read_text(encoding="utf-8"))["version"]
+            for relative_path in ("plugin.json", ".codex-plugin/plugin.json")
+        }
+        self.assertEqual(manifest_versions, {payload["plugin_version"]})
         self.assertEqual(payload["status"], "complete")
         self.assertEqual(payload["request"]["mode"], "standard")
         self.assertEqual(payload["request"]["required_lanes"], ["heuristic", "metrics"])
@@ -1456,6 +1461,24 @@ class ComplexityPluginRegressionTests(unittest.TestCase):
                 return
             metrics = analyse_file(path)
         self.assertTrue(metrics)
+        self.assertIn("lower-detail", metrics[0].calibration)
+        self.assertIn("lizard", metrics[0].claim_type)
+
+    def test_rust_lizard_output_is_explicitly_limited_or_unavailable(self) -> None:
+        source = """
+        pub fn classify(value: i32) -> i32 {
+            if value > 0 { 1 } else { 0 }
+        }
+        """
+        with temporary_source(source, "sample.rs") as path:
+            if shutil.which("lizard") is None:
+                with self.assertRaises(SystemExit) as raised:
+                    analyse_file(path)
+                self.assertIn("Non-Python analysis requires lizard", str(raised.exception))
+                return
+            metrics = analyse_file(path)
+        self.assertTrue(metrics)
+        self.assertEqual(metrics[0].name, "classify")
         self.assertIn("lower-detail", metrics[0].calibration)
         self.assertIn("lizard", metrics[0].claim_type)
 

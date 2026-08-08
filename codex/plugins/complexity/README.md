@@ -59,6 +59,13 @@ Only `complete` with at least one analysed source file can receive a clean verdi
 Applicability is lane-specific: standard Rust can be complete through metrics,
 while quick Rust is unsupported because no heuristic adapter applies.
 
+Language coverage comes from these adapters, not from the implementation language
+of the plugin itself. Rewriting the Python orchestrator in Rust would not add target
+languages; broader coverage requires a parser or metric adapter for each new source
+class. Keep the current Python implementation unless same-workload measurements show
+a material runtime bottleneck that a smaller native component can address without
+weakening the output contract or increasing installation friction.
+
 ## Canonical output
 
 JSON without output controls remains the schema-v1 full object with
@@ -76,8 +83,14 @@ new consumers should use `analyse-complexity`.
 
 ## Verification
 
+For private development, treat Plugin-Eval as an advisory static hygiene report,
+not the release verdict. Acceptance requires truthful coverage and status, source
+inspection of ranked findings, contract regressions, and a repeatable real-repository
+run. Public-listing metadata is a separate publication gate and should not be
+fabricated for a private Git marketplace.
+
 ```sh
-python3 -m unittest -v plugins.complexity.tests.test_complexity_plugin
+python3 -m unittest discover -s plugins/complexity/tests -p 'test_*.py' -v
 ```
 
 The skill remains read-only: command output is evidence, and strong performance or
